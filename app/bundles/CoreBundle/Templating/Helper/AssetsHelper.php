@@ -91,11 +91,6 @@ class AssetsHelper
         return $prefix;
     }
 
-    public function getImagesPath($absolute = false)
-    {
-        return $this->pathsHelper->getSystemPath('images', $absolute);
-    }
-
     /**
      * Set asset url path.
      *

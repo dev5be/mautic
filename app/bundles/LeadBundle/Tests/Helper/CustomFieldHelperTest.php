@@ -52,24 +52,20 @@ class CustomFieldHelperTest extends \PHPUnit\Framework\TestCase
     public function testFieldsValuesTransformerWithoutRelativesDates()
     {
         $values = [
-            'customdate'         => '2020-11-01',
-            'customdatetime'     => '2020-11-02 23:59:00',
-            'customtime'         => '23:59:00',
-            'customnulldatetime' => null,
+            'customdate'     => '2020-11-01',
+            'customdatetime' => '2020-11-02 23:59:00',
+            'customtime'     => '23:59:00',
         ];
 
         $fields = [
-            'customdate'         => [
+            'customdate'=> [
                 'type' => 'date',
             ],
-            'customdatetime'     => [
+            'customdatetime'=> [
                 'type' => 'datetime',
             ],
-            'customtime'         => [
+            'customtime'=> [
                 'type' => 'time',
-            ],
-            'customnulldatetime' => [
-                'type' => 'datetime',
             ],
         ];
 
@@ -79,101 +75,29 @@ class CustomFieldHelperTest extends \PHPUnit\Framework\TestCase
     public function testFieldsValuesTransformerWithRelativesDates()
     {
         $values = [
-            'customdate'         => '-1 day',
-            'customdatetime'     => '-1 day',
-            'customtime'         => '-20 minutes',
-            'customnulldatetime' => null,
+            'customdate'     => '-1 day',
+            'customdatetime' => '-1 day',
+            'customtime'     => '-20 minutes',
         ];
 
         $fields = [
-            'customdate'         => [
+            'customdate'=> [
                 'type' => 'date',
             ],
-            'customdatetime'     => [
+            'customdatetime'=> [
                 'type' => 'datetime',
             ],
-            'customtime'         => [
+            'customtime'=> [
                 'type' => 'time',
-            ],
-            'customnulldatetime' => [
-                'type' => 'datetime',
             ],
         ];
 
         $expected = [
-            'customdate'         => (new DateTimeHelper('-1 day'))->getString('Y-m-d'),
-            'customdatetime'     => (new DateTimeHelper('-1 day'))->getString('Y-m-d H:i:s'),
-            'customtime'         => (new DateTimeHelper('-20 minutes'))->getString('H:i:s'),
-            'customnulldatetime' => null,
+            'customdate'     => (new DateTimeHelper('-1 day'))->getString('Y-m-d'),
+            'customdatetime' => (new DateTimeHelper('-1 day'))->getString('Y-m-d H:i:s'),
+            'customtime'     => (new DateTimeHelper('-20 minutes'))->getString('H:i:s'),
         ];
 
         $this->assertSame($expected, CustomFieldHelper::fieldsValuesTransformer($fields, $values));
-    }
-
-    public function testFieldsValuesWithNullsOrEmptyStringsAreNotTransformedToRelativesDates()
-    {
-        $values = [
-            'customdate'        => null,
-            'customdatetime'    => null,
-            'customtime'        => null,
-            'customemptystring' => '',
-        ];
-
-        $fields = [
-            'customdate'        => [
-                'type' => 'date',
-            ],
-            'customdatetime'    => [
-                'type' => 'datetime',
-            ],
-            'customtime'        => [
-                'type' => 'time',
-            ],
-            'customemptystring' => [
-                'type' => 'datetime',
-            ],
-        ];
-
-        $expected = [
-            'customdate'        => null,
-            'customdatetime'    => null,
-            'customtime'        => null,
-            'customemptystring' => null,
-        ];
-
-        $this->assertSame($expected, CustomFieldHelper::fieldsValuesTransformer($fields, $values));
-    }
-
-    public function testFieldsValuesTransformerForDifferingValueTypes()
-    {
-        $fields = [
-            'select'      => [
-                'type' => 'select',
-            ],
-            'multiselect' => [
-                'type' => 'multiselect',
-            ],
-            'number'      => [
-                'type' => 'number',
-            ],
-            'string'      => [
-                'type' => 'text',
-            ],
-            'boolean'     => [
-                'type' => 'boolean',
-            ],
-        ];
-
-        $values = [
-            'select'      => 'string',
-            'multiselect' => [
-                'array',
-            ],
-            'number'      => 100,
-            'string'      => 'string',
-            'boolean'     => 0,
-        ];
-
-        $this->assertSame($values, CustomFieldHelper::fieldsValuesTransformer($fields, $values));
     }
 }
